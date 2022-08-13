@@ -2,8 +2,10 @@ name: AdvancedReplay
 version: ${project.version}
 main: me.jumper251.replay.ReplaySystem
 author: Jumper251
-depend: [ProtocolLib, PlexCore]
+depend: [ProtocolLib, VagtSystem, PlexCore]
 commands:
   replay:
     description: Main Replay command
     aliases: [rp]
+  vagtreplay:
+    aliases: vr

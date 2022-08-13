@@ -4,6 +4,7 @@ package me.jumper251.replay;
 import java.util.HashMap;
 
 
+import me.jumper251.replay.vagt.VagtReplayManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,7 +40,6 @@ public class ReplaySystem extends JavaPlugin {
 				
 			}
 		}
-
 	}
 	
 	@Override
@@ -70,6 +70,7 @@ public class ReplaySystem extends JavaPlugin {
 		
 		getLogger().info("Finished (" + (System.currentTimeMillis() - start) + "ms)");
 
+		VagtReplayManager.register(this);
 	}
 	
 	

@@ -52,6 +52,13 @@
             <version>3.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>dk.plexhost.vagt</groupId>
+            <artifactId>VagtSystem</artifactId>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/VagtSystem.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
     </dependencies>
 
     <properties>

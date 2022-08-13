@@ -4,6 +4,7 @@ package me.jumper251.replay;
 import java.util.HashMap;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -44,8 +45,14 @@ public class ReplaySystem extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		
-		Long start = System.currentTimeMillis();
+
+		if(!Bukkit.getPluginManager().isPluginEnabled("PlexCore")){
+			getLogger().severe("PlexCore not found - disabling Replay");
+			setEnabled(false);
+			return;
+		}
+
+		long start = System.currentTimeMillis();
 
 		getLogger().info("Loading Replay v" + getDescription().getVersion() + " by " + getDescription().getAuthors().get(0));
 		

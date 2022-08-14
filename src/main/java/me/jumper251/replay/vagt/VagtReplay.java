@@ -1,6 +1,8 @@
 package me.jumper251.replay.vagt;
 
+import dk.plexit.vagt.utils.LocationUtils;
 import dk.plexit.vagt.vagt.VagtRank;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -16,12 +18,15 @@ public class VagtReplay {
 
     private final UUID replayID;
 
+    private final Location location;
+
     private boolean isOld;
 
-    public VagtReplay(int vagtRank, long timeStamp, String lastName, UUID uniqueId, UUID replayID, boolean isOld) {
+    public VagtReplay(int vagtRank, long timeStamp, String lastName, UUID uniqueId, Location location, UUID replayID, boolean isOld) {
         this.vagtRank = VagtRank.getRankFromInt(vagtRank);
         this.timeStamp = timeStamp;
         this.lastName = lastName;
+        this.location = location;
         this.uniqueId = uniqueId;
         this.replayID = replayID;
         this.isOld = isOld;
@@ -32,6 +37,7 @@ public class VagtReplay {
         this.vagtRank = VagtRank.getRankFromInt(config.getInt("vagtRank"));
         this.timeStamp = config.getLong("timeStamp");
         this.lastName = config.getString("lastName");
+        this.location = LocationUtils.fromString(config.getString("location"));
         this.uniqueId = UUID.fromString(config.getString("uniqueId"));
         this.replayID = UUID.fromString(config.getString("replayID"));
         this.isOld = config.getBoolean("isOld");
@@ -57,6 +63,10 @@ public class VagtReplay {
         return vagtRank;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     public boolean isOld() {
         return isOld;
     }
@@ -72,6 +82,7 @@ public class VagtReplay {
         yaml.set("rank", getVagtRank().getRank());
         yaml.set("timestamp", getTimestamp());
         yaml.set("lastName", getLastName());
+        yaml.set("location", LocationUtils.toString(getLocation()));
         yaml.set("uniqueid", getUniqueId().toString());
         yaml.set("id", getReplayID().toString());
         yaml.set("old", isOld);

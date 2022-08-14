@@ -94,6 +94,7 @@ public class VagtReplayManager {
                 System.currentTimeMillis(),
                 player.getName(),
                 player.getUniqueId(),
+                player.getLocation(),
                 id,
                 false
         );

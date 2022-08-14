@@ -5,6 +5,7 @@ import dk.plexhost.core.builders.SkullBuilder;
 import dk.plexhost.core.gui.guis.GuiItem;
 import dk.plexhost.core.gui.guis.PaginatedGui;
 import dk.plexhost.core.utils.ColorUtils;
+import dk.plexit.vagt.utils.LocationUtils;
 import me.jumper251.replay.vagt.VagtReplay;
 import me.jumper251.replay.vagt.VagtReplayManager;
 import org.bukkit.Material;
@@ -16,17 +17,17 @@ import java.util.Collection;
 
 public class VagtReplayMenu {
 
-    private static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public static void show(Player player, boolean showOld){
-        PaginatedGui gui = new PaginatedGui(5, ColorUtils.getColored((showOld ? "&9&lGamle " : "&9&l") + "Vagt Replays"));
+        PaginatedGui gui = new PaginatedGui(5, ColorUtils.getColored((showOld ? "&9&lGamle " : "&9&lSeneste ") + "Vagt Replays"));
         gui.disableAllInteractions();
         gui.getFiller().fillBorder(new GuiItem(new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short)3).build()));
 
         gui.setItem(Arrays.asList(15, 24, 25, 33), new GuiItem(new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short)3).build()));
 
         gui.setItem(16, new GuiItem(new ItemBuilder(Material.CHEST, 1)
-                .setDisplayName("&a&lVis nye replays")
+                .setDisplayName("&a&lVis seneste replays")
                 .setLore("&8&l » &7Klik for at se nye replays.")
                 .glow(!showOld)
                 .build(), (event) -> show(player, false)));
@@ -34,7 +35,7 @@ public class VagtReplayMenu {
         gui.setItem(34, new GuiItem(new ItemBuilder(Material.ENDER_CHEST, 1)
                 .setDisplayName("&c&lVis gamle replays")
                 .setLore("&8&l » &7Klik for at se gamle replays.")
-                .glow(!showOld)
+                .glow(showOld)
                 .build(), (event) -> show(player, true)));
 
         Collection<VagtReplay> replays = showOld ? VagtReplayManager.getOldReplays() : VagtReplayManager.getNewReplays();
@@ -60,6 +61,7 @@ public class VagtReplayMenu {
                     .setLore(
                             "&7Rank&8: &f"+replay.getVagtRank().getPrefix(),
                             "&7Tidspunkt&8: &f"+format.format(replay.getTimestamp()),
+                            "&7Location&8: &f"+ LocationUtils.toString(replay.getLocation()),
                             "",
                             "&8&l » &7Klik for at se replays."
                     )

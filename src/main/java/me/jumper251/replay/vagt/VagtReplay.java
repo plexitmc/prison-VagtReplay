@@ -34,13 +34,13 @@ public class VagtReplay {
 
     public VagtReplay(File file) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        this.vagtRank = VagtRank.getRankFromInt(config.getInt("vagtRank"));
-        this.timeStamp = config.getLong("timeStamp");
-        this.lastName = config.getString("lastName");
+        this.vagtRank = VagtRank.getRankFromInt(config.getInt("rank"));
+        this.timeStamp = config.getLong("timestamp");
+        this.lastName = config.getString("lastname");
         this.location = LocationUtils.fromString(config.getString("location"));
-        this.uniqueId = UUID.fromString(config.getString("uniqueId"));
-        this.replayID = UUID.fromString(config.getString("replayID"));
-        this.isOld = config.getBoolean("isOld");
+        this.uniqueId = UUID.fromString(config.getString("uniqueid"));
+        this.replayID = UUID.fromString(config.getString("replayid"));
+        this.isOld = config.getBoolean("old");
     }
 
     public long getTimestamp() {
@@ -81,10 +81,10 @@ public class VagtReplay {
 
         yaml.set("rank", getVagtRank().getRank());
         yaml.set("timestamp", getTimestamp());
-        yaml.set("lastName", getLastName());
+        yaml.set("lastname", getLastName());
         yaml.set("location", LocationUtils.toString(getLocation()));
         yaml.set("uniqueid", getUniqueId().toString());
-        yaml.set("id", getReplayID().toString());
+        yaml.set("replayid", getReplayID().toString());
         yaml.set("old", isOld);
 
         File file = new File(VagtReplayManager.getReplayFolder(), getReplayID().toString() + ".yml");

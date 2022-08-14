@@ -2,7 +2,6 @@ package me.jumper251.replay.vagt;
 
 import dk.plexhost.core.utils.FileUtils;
 import dk.plexit.vagt.VagtSystem;
-import dk.plexit.vagt.events.VagtKillEvent;
 import dk.plexit.vagt.managers.VagtManager;
 import dk.plexit.vagt.vagt.Vagt;
 import me.jumper251.replay.ReplaySystem;
@@ -12,6 +11,7 @@ import me.jumper251.replay.vagt.listeners.EntityDamageListener;
 import me.jumper251.replay.vagt.listeners.EntityRegainHealthListener;
 import me.jumper251.replay.vagt.listeners.PlayerQuitListener;
 import me.jumper251.replay.vagt.listeners.VagtKillListener;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class VagtReplayManager {
@@ -33,7 +32,7 @@ public class VagtReplayManager {
 
 
     public static void register(ReplaySystem replaySystem) {
-        replayFolder = new File(replaySystem.getDataFolder(), "replays");
+        replayFolder = new File(replaySystem.getDataFolder(), "vagt-replays");
         loadReplays();
         enableListeners(replaySystem, VagtSystem.getInstance().getVagtManager());
 
@@ -56,7 +55,7 @@ public class VagtReplayManager {
         for(File file : files){
             if(FileUtils.isYamlFile(file.getName())){
                 VagtReplay replay = new VagtReplay(file);
-                if(replay.isOld()) oldReplays.put(replay.getUniqueId(), replay);
+                if (replay.isOld()) oldReplays.put(replay.getUniqueId(), replay);
                 else newReplays.put(replay.getUniqueId(), replay);
             }
         }
@@ -68,13 +67,14 @@ public class VagtReplayManager {
         UUID id;
 
         do id = UUID.randomUUID();
-        while (newReplays.containsKey(id) || oldReplays.containsKey(id));
+        while (currentlyRecording.containsKey(id) || newReplays.containsKey(id) || oldReplays.containsKey(id));
 
         currentlyRecording.put(player.getUniqueId(), id);
         ReplayAPI.getInstance().recordReplay(id.toString(), player, player.getWorld().getPlayers());
     }
 
     public static void trashReplay(Player player){
+
         if(!currentlyRecording.containsKey(player.getUniqueId())) return;
 
         UUID id = currentlyRecording.get(player.getUniqueId());

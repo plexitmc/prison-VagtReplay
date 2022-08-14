@@ -3,6 +3,7 @@ package me.jumper251.replay.vagt.listeners;
 import dk.plexit.vagt.managers.VagtManager;
 import dk.plexit.vagt.vagt.Vagt;
 import me.jumper251.replay.vagt.VagtReplayManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,12 +22,13 @@ public class EntityRegainHealthListener implements Listener {
         if(event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
 
-            if(player.getHealth() < 20) return;
+            if(player.getHealth() + event.getAmount() < 20) return;
             if(!manager.isVagt(player)) return;
 
             Vagt vagt = manager.getVagt(player);
-            if(vagt != null)
-                VagtReplayManager.saveReplay(vagt, player);
+            if(vagt != null) {
+                VagtReplayManager.trashReplay(player);
+            }
         }
     }
 }

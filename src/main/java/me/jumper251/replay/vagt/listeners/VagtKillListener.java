@@ -17,6 +17,7 @@ public class VagtKillListener implements Listener {
     @EventHandler
     public void onVagtKill(VagtKillEvent event){
 
+        if(!event.hadVagtRank()) return;
         if(!manager.isVagt(event.getVictim())) return;
 
         VagtReplayManager.saveReplay(event.getVagt(), event.getVictim());

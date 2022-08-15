@@ -1,6 +1,7 @@
 package me.jumper251.replay.vagt.listeners;
 
 import dk.plexit.vagt.managers.VagtManager;
+import dk.plexit.vagt.vagt.VagtRank;
 import me.jumper251.replay.vagt.VagtReplayManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +24,8 @@ public class EntityDamageListener implements Listener {
 
             if(player.getHealth() > 20) return;
             if(!manager.isVagt(player)) return;
+
+            if(VagtRank.getHighestVagtRank(player) == null) return;
 
             VagtReplayManager.startReplay(player);
         }

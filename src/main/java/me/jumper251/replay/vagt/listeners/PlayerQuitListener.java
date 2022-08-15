@@ -2,6 +2,8 @@ package me.jumper251.replay.vagt.listeners;
 
 import dk.plexit.vagt.managers.VagtManager;
 import dk.plexit.vagt.vagt.Vagt;
+import dk.plexit.vagt.vagt.VagtRank;
+import me.jumper251.replay.vagt.VagtReplay;
 import me.jumper251.replay.vagt.VagtReplayManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +23,8 @@ public class PlayerQuitListener implements Listener {
         if(!manager.isVagt(event.getPlayer())) return;
 
         Vagt vagt = manager.getVagt(event.getPlayer());
-        if(vagt != null)
+        if(vagt != null && VagtRank.getHighestVagtRank(event.getPlayer()) != null)
             VagtReplayManager.saveReplay(vagt, event.getPlayer());
+
     }
 }

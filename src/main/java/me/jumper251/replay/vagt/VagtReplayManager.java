@@ -7,11 +7,7 @@ import dk.plexit.vagt.vagt.Vagt;
 import me.jumper251.replay.ReplaySystem;
 import me.jumper251.replay.api.ReplayAPI;
 import me.jumper251.replay.vagt.command.VagtReplayCommand;
-import me.jumper251.replay.vagt.listeners.EntityDamageListener;
-import me.jumper251.replay.vagt.listeners.EntityRegainHealthListener;
-import me.jumper251.replay.vagt.listeners.PlayerQuitListener;
-import me.jumper251.replay.vagt.listeners.VagtKillListener;
-import org.bukkit.Bukkit;
+import me.jumper251.replay.vagt.listeners.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,18 +41,22 @@ public class VagtReplayManager {
         pm.registerEvents(new EntityRegainHealthListener(manager), plugin);
         pm.registerEvents(new PlayerQuitListener(manager), plugin);
         pm.registerEvents(new VagtKillListener(manager), plugin);
+        pm.registerEvents(new PlayerGameModeChangeListener(manager), plugin);
     }
 
 
-    private static void loadReplays(){
+    public static void loadReplays(){
+        newReplays.clear();
+        oldReplays.clear();
+
         File[] files = replayFolder.listFiles();
         if(files == null || files.length == 0) return;
 
         for(File file : files){
             if(FileUtils.isYamlFile(file.getName())){
                 VagtReplay replay = new VagtReplay(file);
-                if (replay.isOld()) oldReplays.put(replay.getUniqueId(), replay);
-                else newReplays.put(replay.getUniqueId(), replay);
+                if (replay.isOld()) oldReplays.put(replay.getReplayID(), replay);
+                else newReplays.put(replay.getReplayID(), replay);
             }
         }
     }

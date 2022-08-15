@@ -3,25 +3,25 @@ package me.jumper251.replay.vagt.listeners;
 import dk.plexit.vagt.managers.VagtManager;
 import dk.plexit.vagt.vagt.Vagt;
 import me.jumper251.replay.vagt.VagtReplayManager;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
-public class EntityRegainHealthListener implements Listener {
+public class PlayerGameModeChangeListener implements Listener {
 
     private final VagtManager manager;
 
-    public EntityRegainHealthListener(VagtManager manager){
+    public PlayerGameModeChangeListener(VagtManager manager){
         this.manager = manager;
     }
 
     @EventHandler
-    public void onEntityRegainHealth(EntityRegainHealthEvent event){
-        if(event.getEntity() instanceof Player){
-            Player player = (Player) event.getEntity();
+    public void onGamemodeChange(PlayerGameModeChangeEvent event){
+        if(event.getPlayer() != null && !event.getNewGameMode().equals(GameMode.SURVIVAL)){
+            Player player = (Player) event.getPlayer();
 
-            if(player.getHealth() + event.getAmount() < 20) return;
             if(!manager.isVagt(player)) return;
 
             Vagt vagt = manager.getVagt(player);

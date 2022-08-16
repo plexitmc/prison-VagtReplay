@@ -80,6 +80,8 @@ public class ReplayingUtils {
 	}
 	
 	public void handleAction(ActionData action, ReplayData data, boolean reversed) {
+		if(action == null) return;
+
 		if (action.getType() == ActionType.SPAWN) {
 			if (!reversed) {
 				spawnNPC(action);

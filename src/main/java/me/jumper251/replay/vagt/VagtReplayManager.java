@@ -4,6 +4,7 @@ import dk.plexhost.core.utils.FileUtils;
 import dk.plexit.vagt.VagtSystem;
 import dk.plexit.vagt.managers.VagtManager;
 import dk.plexit.vagt.vagt.Vagt;
+import dk.plexit.vagt.vagt.VagtRank;
 import me.jumper251.replay.ReplaySystem;
 import me.jumper251.replay.api.ReplayAPI;
 import me.jumper251.replay.vagt.command.VagtReplayCommand;
@@ -84,6 +85,11 @@ public class VagtReplayManager {
 
     public static void saveReplay(Vagt vagt, Player player){
         if(!currentlyRecording.containsKey(player.getUniqueId())) return;
+
+        if(VagtRank.getHighestVagtRank(player) == null) {
+            trashReplay(player);
+            return;
+        }
 
         UUID id = currentlyRecording.get(player.getUniqueId());
         currentlyRecording.remove(player.getUniqueId());

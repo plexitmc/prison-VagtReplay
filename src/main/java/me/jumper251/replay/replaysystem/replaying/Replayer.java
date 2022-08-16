@@ -175,8 +175,9 @@ public class Replayer {
 	
 	public void stop() {
 		sendMessage("Replay finished.");
-		
-		this.run.cancel();
+		if(this.run != null)
+			this.run.cancel();
+
 		this.getReplay().getData().getActions().clear();
 		
 		for (INPC npc : this.npcs.values()) {

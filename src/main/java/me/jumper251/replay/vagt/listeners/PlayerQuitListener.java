@@ -23,8 +23,10 @@ public class PlayerQuitListener implements Listener {
         if(!manager.isVagt(event.getPlayer())) return;
 
         Vagt vagt = manager.getVagt(event.getPlayer());
-        if(vagt != null && VagtRank.getHighestVagtRank(event.getPlayer()) != null)
-            VagtReplayManager.saveReplay(vagt, event.getPlayer());
+        if(vagt != null && VagtRank.getHighestVagtRank(event.getPlayer()) != null) {
+            //VagtReplayManager.saveReplay(vagt, event.getPlayer());
+            VagtReplayManager.trashReplay(event.getPlayer());
+        }
 
     }
 }

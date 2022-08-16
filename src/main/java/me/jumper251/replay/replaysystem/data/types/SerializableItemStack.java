@@ -110,7 +110,7 @@ public class SerializableItemStack implements Serializable {
 		SerializableItemStack serializableItemStack = new SerializableItemStack(serialized);
 		
 		if (!block) {
-			serializableItemStack.setHasEnchantment(stack.getEnchantments().size() > 0);
+			serializableItemStack.setHasEnchantment(stack.hasItemMeta() && stack.getItemMeta().hasEnchants());
 
 			if (stack.hasItemMeta() && stack.getItemMeta() instanceof LeatherArmorMeta) {
 				LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();

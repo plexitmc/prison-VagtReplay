@@ -1,5 +1,6 @@
 package me.jumper251.replay.vagt;
 
+import dk.plexhost.core.time.Time;
 import dk.plexhost.core.utils.FileUtils;
 import dk.plexit.vagt.VagtSystem;
 import dk.plexit.vagt.managers.VagtManager;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 public class VagtReplayManager {
 
-    private static final HashMap<UUID, UUID> currentlyRecording = new HashMap<>();
+    private static final HashMap<UUID, VagtRecording> currentlyRecording = new HashMap<>();
 
     private static final HashMap<UUID, VagtReplay> newReplays = new HashMap<>();
     private static final HashMap<UUID, VagtReplay> oldReplays = new HashMap<>();
@@ -70,7 +71,7 @@ public class VagtReplayManager {
         do id = UUID.randomUUID();
         while (currentlyRecording.containsKey(id) || newReplays.containsKey(id) || oldReplays.containsKey(id));
 
-        currentlyRecording.put(player.getUniqueId(), id);
+        currentlyRecording.put(player.getUniqueId(), new VagtRecording(id));
         ReplayAPI.getInstance().recordReplay(id.toString(), player, player.getWorld().getPlayers());
     }
 
@@ -78,9 +79,9 @@ public class VagtReplayManager {
 
         if(!currentlyRecording.containsKey(player.getUniqueId())) return;
 
-        UUID id = currentlyRecording.get(player.getUniqueId());
+        VagtRecording vagtRecording = currentlyRecording.get(player.getUniqueId());
         currentlyRecording.remove(player.getUniqueId());
-        ReplayAPI.getInstance().stopReplay(id.toString(), false);
+        ReplayAPI.getInstance().stopReplay(vagtRecording.getId().toString(), false);
     }
 
     public static void saveReplay(Vagt vagt, Player player){
@@ -91,9 +92,9 @@ public class VagtReplayManager {
             return;
         }
 
-        UUID id = currentlyRecording.get(player.getUniqueId());
+        VagtRecording vagtRecording = currentlyRecording.get(player.getUniqueId());
         currentlyRecording.remove(player.getUniqueId());
-        ReplayAPI.getInstance().stopReplay(id.toString(), true);
+        ReplayAPI.getInstance().stopReplay(vagtRecording.getId().toString(), true);
 
         VagtReplay replay = new VagtReplay(
                 vagt.getRankInt(),
@@ -101,12 +102,13 @@ public class VagtReplayManager {
                 player.getName(),
                 player.getUniqueId(),
                 player.getLocation(),
-                id,
+                vagtRecording.getId(),
+                Time.currentUnixInSeconds() - vagtRecording.getStartTime(),
                 false
         );
         replay.save();
 
-        newReplays.put(id, replay);
+        newReplays.put(vagtRecording.getId(), replay);
     }
 
     public static void showReplay(Player player, UUID id){

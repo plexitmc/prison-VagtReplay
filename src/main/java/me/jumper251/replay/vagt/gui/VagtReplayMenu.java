@@ -4,6 +4,7 @@ import dk.plexhost.core.builders.ItemBuilder;
 import dk.plexhost.core.builders.SkullBuilder;
 import dk.plexhost.core.gui.guis.GuiItem;
 import dk.plexhost.core.gui.guis.PaginatedGui;
+import dk.plexhost.core.time.Time;
 import dk.plexhost.core.utils.ColorUtils;
 import dk.plexit.vagt.utils.LocationUtils;
 import me.jumper251.replay.vagt.VagtReplay;
@@ -62,6 +63,7 @@ public class VagtReplayMenu {
                             "&7Rank&8: &f"+replay.getVagtRank().getPrefix(),
                             "&7Tidspunkt&8: &f"+format.format(replay.getTimestamp()),
                             "&7Location&8: &f"+ LocationUtils.toString(replay.getLocation()),
+                            "&7Længde&8: &f"+ Time.getFormattedTime(replay.getLength()),
                             "",
                             "&8&l » &7Klik for at se replays."
                     )

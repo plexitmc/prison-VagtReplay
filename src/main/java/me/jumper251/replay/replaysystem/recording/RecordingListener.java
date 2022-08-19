@@ -116,13 +116,17 @@ public class RecordingListener extends AbstractListener {
 				}
 			}
 
-			if (e.getAction() == Action.LEFT_CLICK_BLOCK && p.getTargetBlock((Set<Material>) null, 5).getType() == Material.FIRE) {
-				LocationData location = LocationData.fromLocation(p.getTargetBlock((Set<Material>) null, 5).getLocation());
+			if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+				Block targetBlock = p.getTargetBlock(null, 5);
+				if(targetBlock != null && targetBlock.getType() == Material.FIRE) {
 
-				ItemData before = new ItemData(Material.FIRE.getId(), 0);
-				ItemData after = new ItemData(0, 0);
+					LocationData location = LocationData.fromLocation(p.getTargetBlock(null, 5).getLocation());
 
-				this.packetRecorder.addData(p.getName(), new BlockChangeData(location, before, after));
+					ItemData before = new ItemData(Material.FIRE.getId(), 0);
+					ItemData after = new ItemData(0, 0);
+
+					this.packetRecorder.addData(p.getName(), new BlockChangeData(location, before, after));
+				}
 			}
 
 		}
